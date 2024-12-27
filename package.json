@@ -1,0 +1,24 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev --host",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@vuesax-alpha/icons-vue": "0.0.2-beta.12",
+    "nuxt": "^3.15.0",
+    "vue": "latest",
+    "vue-router": "latest"
+  },
+  "packageManager": "pnpm@8.7.6+sha1.a428b12202bc4f23b17e6dffe730734dae5728e2",
+  "devDependencies": {
+    "@vuesax-alpha/nuxt": "^0.0.5",
+    "sass": "^1.83.0",
+    "vuesax-alpha": "0.2.0-beta.80"
+  }
+}
