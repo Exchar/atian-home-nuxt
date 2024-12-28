@@ -4,13 +4,15 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev --host",
+    "dev": "nuxt dev --host 0.0.0.0 --port 3000",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@vuesax-alpha/icons-vue": "0.0.2-beta.12",
+    "boxicons": "^2.1.4",
+    "dayjs": "^1.11.13",
     "nuxt": "^3.15.0",
     "vue": "latest",
     "vue-router": "latest"

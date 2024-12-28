@@ -3,5 +3,4 @@ interface bingImgInfo {
     sortdate: string,
     copyright: string,
     urlbase: string,
-    title: string,
 }
