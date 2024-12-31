@@ -1,9 +1,4 @@
-<script setup lang="ts">
-
+<script lang="ts" setup>
+navigateTo('/home')
 </script>
-<template>
-
-</template>
-
-<style lang="css" scoped>
-</style>
+<template></template>

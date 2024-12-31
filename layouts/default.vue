@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import windImg from '~/assets/imgs/wind.png';
 
-const active = ref('')
+const active = ref('home');
+const activeSidebar = ref(false);
 const wallpaper = ref<bingImgInfo>({
   url: '',
   sortdate: '',
@@ -16,78 +18,117 @@ if (routeInfo.path) {
 
 
 // 获取壁纸图
-const imgInfo = (await useFetch('/api/wallpaper')).data.value;
+const imgInfo = (await useFetch('/api/wallpaper')).data.value as bingImgInfo;
 
-console.log('图片信息', imgInfo);
+// console.log('图片信息', imgInfo);
 wallpaper.value = imgInfo;
+
+const { $gsap: gsap } = useNuxtApp();
+onMounted(() => {
+  // 开始旋转风车图片
+  gsap.to('.wind-img', {
+    rotate: 360,
+    duration: 4,
+    repeat: -1,
+    ease: 'none'
+  })
+})
+const changeActiveSideBar = ()=>{
+  activeSidebar.value = !activeSidebar.value
+}
 
 </script>
 <template>
-  <!-- 侧边导航栏 -->
-  <vs-sidebar v-model="active" hover-expand absolute reduce open>
-    <template #logo>
-    </template>
-    <template #header />
-    <vs-sidebar-item id="home">
-      <template #icon>
+  <div class="page-content">
+    <div class="my-sidebar">
+      <!-- 顶部导航栏 -->
+      <vs-navbar class="my-navbar"
+                 v-model="active" shadow shape="square" center-collapsed
+                 padding-scroll
+                 target-scroll=".content-main"
+      >
+        <template #left>
+          <vs-button type="flat" icon @click="changeActiveSideBar">
+            <i class="bx bx-menu" />
+          </vs-button>
+        </template>
+        <vs-navbar-item id="home" :active="active == 'home'" to="/home"> 博客 </vs-navbar-item>
+        <vs-navbar-item id="projects" :active="active == 'projects'" to="/projects"> 项目总览 </vs-navbar-item>
+        <vs-navbar-item id="about" :active="active == 'about'" to="/about">
+          关于我
+        </vs-navbar-item>
+        <vs-navbar-item id="news" :active="active == 'news'" to="/news">
+          新闻趣事
+        </vs-navbar-item>
+        <!-- <template #right>
+          <vs-button type="flat">Login</vs-button>
+          <vs-button>Get Started</vs-button>
+        </template> -->
+      </vs-navbar>
+      <!-- 侧边导航栏 -->
+      <vs-sidebar v-model="active" v-model:open="activeSidebar" absolute>
+        <template #logo>
+        </template>
+        <template #header />
+        <vs-sidebar-item id="home" to="/home">
+          <template #icon>
 
-        <i class="bx bx-book-content"></i>
-      </template>
-      博客
-    </vs-sidebar-item>
-    <vs-sidebar-item id="Music">
-      <template #icon>
-        <i class="bx bxs-music" />
-      </template>
-      项目总览
-    </vs-sidebar-item>
-    <vs-sidebar-item id="donate">
-      <template #icon>
-        <i class="bx bxs-donate-heart" />
-      </template>
-      关于我
-    </vs-sidebar-item>
-    <vs-sidebar-item id="news">
-      <template #icon>
-        <i class="bx bxs-donate-heart" />
-      </template>
-      新闻趣事
-    </vs-sidebar-item>
-    <template #footer>
-    </template>
-  </vs-sidebar>
-  <!-- 顶部导航栏 -->
-  <div class="hidden">
-    <vs-navbar class="my-navbar" v-model="active" shadow shape="square" center-collapsed>
-      <!-- <template #left>
-        <vs-button type="flat" icon @click="activeSidebar = !activeSidebar">
-          <i class="bx bx-menu" />
-        </vs-button>
-      </template> -->
-      <vs-navbar-item id="guide" :active="active == ''" to="/"> 博客 </vs-navbar-item>
-      <vs-navbar-item id="docs" :active="active == 'projects'" to="/projects"> 项目总览 </vs-navbar-item>
-      <vs-navbar-item id="components" :active="active == 'about'" to="/about">
-        关于我
-      </vs-navbar-item>
-      <vs-navbar-item id="news" :active="active == 'news'" to="/news">
-        新闻趣事
-      </vs-navbar-item>
-      <!-- <template #right>
-        <vs-button type="flat">Login</vs-button>
-        <vs-button>Get Started</vs-button>
-      </template> -->
-    </vs-navbar>
-    <!-- 顶部壁纸图，使用Bing API -->
-    <div class="bing-wallpaper" :style="{
-      backgroundImage: `url(${wallpaper.url})`
-    }">
-      <p class="description">{{ wallpaper.copyright }}</p>
-      <div class="external-weather">
-        <iframe allowtransparency="yes" border="0" frameborder="0" scrolling="no"
-          :src="useRuntimeConfig().public.weatherPage"></iframe>
-      </div>
+            <i class="bx bx-book-content"></i>
+          </template>
+          博客
+        </vs-sidebar-item>
+        <vs-sidebar-item id="projects" to="projects">
+          <template #icon>
+            <i class="bx bx-shape-polygon" />
+          </template>
+          项目总览
+        </vs-sidebar-item>
+        <vs-sidebar-item id="about" to="/about">
+          <template #icon>
+            <i class="bx bxs-upside-down" />
+          </template>
+          关于我
+        </vs-sidebar-item>
+        <vs-sidebar-item id="news" to="/news">
+          <template #icon>
+            <i class="bx bx-news" />
+          </template>
+          新闻趣事
+        </vs-sidebar-item>
+        <template #footer>
+        </template>
+      </vs-sidebar>
     </div>
-    <slot />
+    <div class="content-main" id="content-main">
+      <!-- 顶部壁纸图，使用Bing API -->
+      <div class="bing-wallpaper" :style="{
+    backgroundImage: `url(${wallpaper.url})`
+  }">
+        <p class="description">{{ wallpaper.copyright }}</p>
+        <div class="external-weather">
+          <iframe allowtransparency="true" border="0" frameborder="0" scrolling="no"
+                  :src="useRuntimeConfig().public.weatherPage"></iframe>
+        </div>
+      </div>
+      <div id="page-main">
+        <slot />
+      </div>
+      <!-- 底部footer -->
+      <vs-row class="my-footer">
+        <vs-col vs-type="flex" class="my-footer-main" vs-justify="center" vs-align="center" vs-w="24">
+          <p class="copyright">
+            Copyright © 2025
+            <a href="https://github.com/Exchar" class="link" target="_blank" style="margin-right: 16px">Exchar</a>
+            <a href="https://beian.miit.gov.cn/" class="link" target="_blank">蜀ICP备2023023736号</a>
+          </p>
+          <p class="abreast">
+            <img class="wind-img" :src="windImg" alt="">
+            powerd by <a href="https://vuesax-alpha.vercel.app/" class="link" style="margin-left: 4px;"> vuesax-alpha</a>&<a
+              href="https://nuxtjs.org.cn/" class="link">Nuxt</a>
+          </p>
+        </vs-col>
+      </vs-row>
+    </div>
   </div>
 </template>
 <style lang="css" scoped>
@@ -111,7 +152,8 @@ wallpaper.value = imgInfo;
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
-  box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, var(--vs-shadow-opacity));
+  box-shadow: 0px 6px 7px 0px rgba(0, 0, 0, 0.2);
+  margin-bottom: 2vh;
 
   .description {
     color: #a2b5d8;
@@ -127,9 +169,9 @@ wallpaper.value = imgInfo;
   .external-weather {
     position: absolute;
     right: 16px;
-    bottom: 32px;
+    top: 64px;
     height: 130px;
-    width: 240px;
+    width: 254px;
     box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, var(--vs-shadow-opacity));
     background-color: rgba(255, 255, 255, .2);
     backdrop-filter: blur(8px);
@@ -144,5 +186,49 @@ wallpaper.value = imgInfo;
       background-color: transparent;
     }
   }
+}
+
+#page-main {
+  min-height: calc(56vh - 10px);
+}
+
+.my-footer {
+  background-color: rgba(0, 0, 0, .8);
+  color: #ffffff;
+  backdrop-filter: blur(14px);
+  height: 8vh;
+}
+
+.my-footer-main {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.link {
+  color: #007aff;
+}
+
+.wind-img {
+  height: 1.8em;
+  margin-right: 8px;
+}
+.page-content{
+  height: 100%;
+}
+.my-sidebar {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+.content-main{
+  height: 100%;
+  overflow-y: auto;
+  position: absolute;
+  width: 100%;
+  top: 0;
 }
 </style>

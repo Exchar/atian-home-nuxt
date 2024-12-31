@@ -1,4 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import AutoImport from 'unplugin-auto-import/vite'
+import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
+import Components from 'unplugin-vue-components/vite'
 export default defineNuxtConfig({
   app: {
     head: {
@@ -13,7 +16,7 @@ export default defineNuxtConfig({
   ssr:true,
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  modules: ['@vuesax-alpha/nuxt'],
+  modules: ['@vuesax-alpha/nuxt', '@hypernym/nuxt-gsap', '@nuxtjs/tailwindcss', 'nuxtjs-naive-ui'],
   vuesaxAlpha: {
     themes: ['dark'],
   },
@@ -21,7 +24,33 @@ export default defineNuxtConfig({
     // bingUrl: 'https://wallpaperApi.atian.work',
     public: {
       bingUrl: 'https://bing.biturl.top',
-      weatherPage: 'https://192.168.211.192:8081/weatherReport/#/today?external=1'
+      weatherPage: 'https://weather.atian.work/#/today?external=1',
+      serviceUrl: 'https://atian.work/api/atianHome'
     }
+  },
+  typescript: {
+    typeCheck:true
+  },
+  gsap: {
+    composables: true
+  },
+  vite: {
+    plugins: [
+      AutoImport({
+        imports: [
+          {
+            'naive-ui': [
+              'useDialog',
+              'useMessage',
+              'useNotification',
+              'useLoadingBar'
+            ]
+          }
+        ]
+      }),
+      Components({
+        resolvers: [NaiveUiResolver()]
+      })
+    ]
   }
 })
