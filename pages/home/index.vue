@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { type BlogItem, type BlogTagItem, type PageData, type ResponseData } from '~/types';
+import {VsLoadingFn} from "vuesax-alpha";
 const myBlogs = ref<BlogItem[]>([]);
 const total = ref(0);
 const router = useRouter();
 const dataLoading = ref(false)
+const $homeContainer = ref<HTMLElement>()
 
 async function getBlogs() {
     const params = {
@@ -48,11 +50,18 @@ async function getBlogs() {
     //         updateDate: ''
     //     },
     // ];
-    useFetch('/api/blogs/getBlogs').then(res => {
+  const loadingFn = VsLoadingFn({
+    target: $homeContainer.value
+  })
+    useFetch('/api/blogs/getBlogs',{
+      params,
+    }).then(res => {
         console.log(res.data.value);
         const resData = res.data.value as unknown as ResponseData<PageData<BlogItem[]>>;
         total.value = resData.data.total;
         myBlogs.value = resData.data.list || [];
+    }).finally(()=> {
+      loadingFn.close()
     })
     // myBlogs.value = (await useFetch('/api/blog/getBlogs')).data as any;
 }
@@ -67,7 +76,7 @@ function detailClick(item:BlogItem) {
 getBlogs()
 </script>
 <template>
-    <div class="my-home-container">
+    <div class="my-home-container" ref="$homeContainer">
         <div class="my-home-container-main">
             <vs-card class="blog-item-container" type="3" v-for="item in myBlogs" :key="item.id" @click="detailClick(item)">
                 <template #title>
