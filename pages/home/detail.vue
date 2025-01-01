@@ -16,20 +16,22 @@ function goHome() {
 }
 </script>
 <template>
-  <div class="guide-header">
-    <vs-button type="transparent" @click="goHome">
-      <i class="bx bx-left-arrow-alt" />
-      <template #animate>
-        首页
-      </template>
-    </vs-button>
+  <div class="detail-container">
+    <div class="guide-header">
+      <vs-button type="transparent" @click="goHome">
+        <i class="bx bx-left-arrow-alt" />
+        <template #animate>
+          首页
+        </template>
+      </vs-button>
 
-    <span class="detail-title" style="margin-left: 8px">
+      <span class="detail-title" style="margin-left: 8px">
       这是一个文章标题
     </span>
+    </div>
+    <MdPreview :id="id" :modelValue="text" />
+    <MdCatalog :editorId="id" :scrollElement="scrollElement" />
   </div>
-  <MdPreview :id="id" :modelValue="text" />
-  <MdCatalog :editorId="id" :scrollElement="scrollElement" />
 </template>
 <style lang="scss">
 .guide-header{

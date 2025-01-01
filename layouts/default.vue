@@ -197,6 +197,7 @@ const changeActiveSideBar = ()=>{
   color: #ffffff;
   backdrop-filter: blur(14px);
   height: 8vh;
+  transition: all .4s;
 }
 
 .my-footer-main {
@@ -230,5 +231,6 @@ const changeActiveSideBar = ()=>{
   position: absolute;
   width: 100%;
   top: 0;
+  transition: all .4s;
 }
 </style>

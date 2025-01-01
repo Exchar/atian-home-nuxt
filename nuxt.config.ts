@@ -4,6 +4,8 @@ import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 export default defineNuxtConfig({
   app: {
+    pageTransition: { name: 'page', mode: 'default' },
+    layoutTransition: {name: 'layout',mode: 'out-in'},
     head: {
       title: 'atian的小屋',
       meta: [
@@ -13,7 +15,6 @@ export default defineNuxtConfig({
       ]
     },
   },
-  ssr:true,
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   modules: ['@vuesax-alpha/nuxt', '@hypernym/nuxt-gsap', '@nuxtjs/tailwindcss', 'nuxtjs-naive-ui'],

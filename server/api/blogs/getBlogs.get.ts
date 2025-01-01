@@ -1,8 +1,8 @@
 export default defineEventHandler(async (event) => {
     const baseUrl = useRuntimeConfig().public.serviceUrl;
-    console.log(event)
-    return fetch(baseUrl + '/blogs/getBlogs', {
+    const res = await fetch(baseUrl + '/blogs/getBlogs', {
         method: 'GET',
-    }).then((res) => res.json());
-    
+    }).then((res)=>res.json());
+    console.log(res.data)
+    return res;
 })

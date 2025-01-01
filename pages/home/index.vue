@@ -5,7 +5,7 @@ const myBlogs = ref<BlogItem[]>([]);
 const total = ref(0);
 const router = useRouter();
 const dataLoading = ref(false)
-const $homeContainer = ref<HTMLElement>()
+const homeContainer = ref<HTMLElement>()
 
 async function getBlogs() {
     const params = {
@@ -51,13 +51,16 @@ async function getBlogs() {
     //     },
     // ];
   const loadingFn = VsLoadingFn({
-    target: $homeContainer.value
+    target: homeContainer,
+    type: 'circles',
+    // text: '玩命加载中',
+    scale: '1.2',
   })
-    useFetch('/api/blogs/getBlogs',{
+    $fetch('/api/blogs/getBlogs',{
       params,
     }).then(res => {
-        console.log(res.data.value);
-        const resData = res.data.value as unknown as ResponseData<PageData<BlogItem[]>>;
+        const resData = res as unknown as ResponseData<PageData<BlogItem[]>>;
+        console.log(resData)
         total.value = resData.data.total;
         myBlogs.value = resData.data.list || [];
     }).finally(()=> {
@@ -73,28 +76,32 @@ function detailClick(item:BlogItem) {
     }
   })
 }
-getBlogs()
+onMounted(()=> {
+  getBlogs()
+})
 </script>
 <template>
-    <div class="my-home-container" ref="$homeContainer">
+    <div class="my-home-container" ref="homeContainer" id="index-home-container">
         <div class="my-home-container-main">
+          <client-only>
             <vs-card class="blog-item-container" type="3" v-for="item in myBlogs" :key="item.id" @click="detailClick(item)">
-                <template #title>
-                    <h3>Art paintings</h3>
-                </template>
-                <template #img>
-                    <img :src="item.coverUrl" />
-                </template>
-                <template #text>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
-                </template>
-                <template #interactions>
-                    <vs-button class="btn-chat" type="shadow">
-                        <i class="bx bx-chat" />
-                        <span class="span"> {{ item.discussCount }} </span>
-                    </vs-button>
-                </template>
+              <template #title>
+                <h3>{{item.blogTitle}}</h3>
+              </template>
+              <template #img>
+                <img :src="item.coverUrl"  alt="图片"/>
+              </template>
+              <template #text>
+                <p>{{item.blogTitle}}</p>
+              </template>
+              <template #interactions>
+                <vs-button class="btn-chat" type="shadow">
+                  <i class="bx bx-chat" />
+                  <span class="span"> {{ item.discussCount }} </span>
+                </vs-button>
+              </template>
             </vs-card>
+          </client-only>
         </div>
     </div>
 </template>
@@ -108,6 +115,7 @@ getBlogs()
     margin-top: 16px;
     padding: 4vw;
     border-radius: var(--vs-radius);
+    min-height: 30vh;
 
     :deep() {
         .vs-card__img {
