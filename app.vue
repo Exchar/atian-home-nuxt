@@ -2,11 +2,11 @@
 
 </script>
 <template>
-  <div id="app">
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-  </div>
+    <div id="app">
+      <NuxtLayout>
+        <NuxtPage />
+      </NuxtLayout>
+    </div>
 </template>
 <style lang="scss">
 @use './assets/styles/index.scss';

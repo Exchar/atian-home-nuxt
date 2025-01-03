@@ -110,14 +110,22 @@ const changeActiveSideBar = ()=>{
                   :src="useRuntimeConfig().public.weatherPage"></iframe>
         </div>
       </div>
-      <div id="page-main">
-        <slot />
-      </div>
+      <n-el id="page-main">
+        <n-loading-bar-provider>
+          <slot />
+        </n-loading-bar-provider>
+        <div class="page-main-background">
+
+        </div>
+        <div class="page-main-funny">
+<!--          <img :src="presonImage" class="left-person"/>-->
+<!--          <img :src="presonImage" class="right-person"/>-->
+        </div>
+      </n-el>
       <!-- 底部footer -->
       <vs-row class="my-footer">
         <vs-col vs-type="flex" class="my-footer-main" vs-justify="center" vs-align="center" vs-w="24">
           <p class="copyright">
-            Copyright © 2025
             <a href="https://github.com/Exchar" class="link" target="_blank" style="margin-right: 16px">Exchar</a>
             <a href="https://beian.miit.gov.cn/" class="link" target="_blank">蜀ICP备2023023736号</a>
           </p>
@@ -190,6 +198,17 @@ const changeActiveSideBar = ()=>{
 
 #page-main {
   min-height: calc(56vh - 10px);
+  .page-main-background{
+    position: relative;
+    z-index: -1;
+  }
+  .page-main-funny{
+    position: fixed;
+    bottom: 0;
+    background-color: #e2e2e2;
+    height: auto;
+    width: auto;
+  }
 }
 
 .my-footer {
