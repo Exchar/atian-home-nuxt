@@ -10,3 +10,42 @@
     position: relative;
     overflow: hidden;
 }
+:root{
+
+}
+
+// scss
+.cardBox{
+    position: relative;
+    //border: 1px solid #03A9F3;
+    &:hover{
+        transform: scale(1.05);
+    }
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        transition: .3s ease-in-out;
+        z-index: -1;
+        border-radius: 12px;
+    }
+    &::before {
+        top: -5px;
+        left: -5px;
+        border-top: 1px solid rgb(var(--vs-primary));
+        border-left: 1px solid rgb(var(--vs-primary));
+    }
+    &::after {
+        right: -5px;
+        bottom: -5px;
+        border-bottom: 1px solid rgb(var(--vs-primary));
+        border-right: 1px solid rgb(var(--vs-primary));
+    }
+    &:hover::before,
+    &:hover::after {
+        width: calc(100% + 10px);
+        height: calc(100% + 10px);
+    }
+}

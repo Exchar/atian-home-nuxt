@@ -37,5 +37,6 @@ export interface BlogItem {
     id: string;
     tagsList: BlogTagItem[];
     updateDate: string;
+    blogContent?: string,
     [property: string]: any;
 }
